@@ -15,7 +15,7 @@ inputs:
     doc: width of each bin in basepairs along the graph vector
   cells_per_file:
     type: int
-    default: 100
+    default: 5000
     doc: Cells per file on component_segmentation
 outputs:
   odgiGraph:
@@ -27,9 +27,6 @@ outputs:
   seqwishGFA:
     type: File
     outputSource: induceGraph/seqwishGFA
-  odgiRDF:
-    type: File
-    outputSource: odgi2rdf/rdf
   readsMergeDedup:
     type: File
     outputSource: dedup/reads_dedup
@@ -85,10 +82,6 @@ steps:
         default: 4
     out: [graph_image]
     run: ../tools/odgi/odgi_viz.cwl
-  odgi2rdf:
-    in: {odgi: buildGraph/odgiGraph}
-    out: [rdf]
-    run: odgi_to_rdf.cwl
   mergeMetadata:
     in:
       metadata: metadata
