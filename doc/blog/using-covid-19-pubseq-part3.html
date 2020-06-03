@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-05-30 Sat 18:12 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>COVID-19 PubSeq Uploading Data (part 3)</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Pjotr Prins" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="Blog stylesheet" type="text/css" href="blog.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">COVID-19 PubSeq Uploading Data (part 3)</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org193669a">1. Uploading Data</a></li>
+<li><a href="#orgc6b3a47">2. Step 1: Upload sequence</a></li>
+<li><a href="#org9c08714">3. Step 2: Add metadata</a>
+<ul>
+<li><a href="#org4c2e907">3.1. Obligatory fields</a>
+<ul>
+<li><a href="#orgdddcb2e">3.1.1. Sample ID (sample<sub>id</sub>)</a></li>
+<li><a href="#orge9c2e76">3.1.2. Collection date</a></li>
+<li><a href="#org62c55ce">3.1.3. Collection location</a></li>
+<li><a href="#org460b377">3.1.4. Sequencing technology</a></li>
+<li><a href="#org77b1e14">3.1.5. Authors</a></li>
+</ul>
+</li>
+<li><a href="#org3cb346f">3.2. Optional fields</a>
+<ul>
+<li><a href="#orgb0cffbb">3.2.1. Host information</a></li>
+<li><a href="#orgd2a43a6">3.2.2. Collecting institution</a></li>
+<li><a href="#org8d5bcf7">3.2.3. Specimen source</a></li>
+<li><a href="#org86b21b2">3.2.4. Source database accession</a></li>
+<li><a href="#org771ea66">3.2.5. Strain name</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org7d281f5">4. Step 3: Submit to COVID-19 PubSeq</a>
+<ul>
+<li><a href="#orgdf0f02d">4.1. Trouble shooting</a></li>
+</ul>
+</li>
+<li><a href="#org29f8a92">5. Step 4: Check output</a></li>
+<li><a href="#orgf493854">6. Bulk sequence uploader</a>
+<ul>
+<li><a href="#org37fadbc">6.1. Run the uploader (CLI)</a></li>
+<li><a href="#org39adf09">6.2. Example: uploading bulk GenBank sequences</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+
+<div id="outline-container-org193669a" class="outline-2">
+<h2 id="org193669a"><span class="section-number-2">1</span> Uploading Data</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The COVID-19 PubSeq allows you to upload your SARS-Cov-2 strains to a
+public resource for global comparisons. A recompute of the pangenome
+gets triggered on upload. Read the <a href="./about">ABOUT</a> page for more information.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc6b3a47" class="outline-2">
+<h2 id="orgc6b3a47"><span class="section-number-2">2</span> Step 1: Upload sequence</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+To upload a sequence in the <a href="http://covid19.genenetwork.org/">web upload page</a> hit the browse button and
+select the FASTA file on your local hard disk.
+</p>
+
+<p>
+We start with an assembled or mapped sequence in FASTA format. The
+PubSeq uploader contains a <a href="https://github.com/arvados/bh20-seq-resource/blob/master/bh20sequploader/qc_fasta.py">QC step</a> which checks whether it is a likely
+SARS-CoV-2 sequence. While PubSeq deduplicates sequences and never
+overwrites metadata, you may still want to check whether your data
+already is in the system by querying some metadata as described in
+<a href="./blog?id=using-covid-19-pubseq-part1">Query metadata with SPARQL</a> or by simply downloading and checking one
+of the files on the <a href="./download">download</a> page. We find GenBank <a href="https://www.ncbi.nlm.nih.gov/nuccore/MT536190">MT536190.1</a> has not
+been included yet. A FASTA text file can be <a href="https://www.ncbi.nlm.nih.gov/nuccore/MT536190.1?report=fasta&amp;log$=seqview&amp;format=text">downloaded</a> to your local
+disk and uploaded through our <a href="./">web upload page</a>. Make sure the file does
+not include any HTML!
+</p>
+
+<p>
+Note: we currently only allow FASTA uploads. In the near future we'll
+allow for uploading raw sequence files. This is important for creating
+an improved pangenome.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9c08714" class="outline-2">
+<h2 id="org9c08714"><span class="section-number-2">3</span> Step 2: Add metadata</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The <a href="./">web upload page</a> contains fields for adding metadata. Metadata is
+not only important for attribution, is also important for
+analysis. The metadata is available for queries, see <a href="./blog?id=using-covid-19-pubseq-part1">Query metadata
+with SPARQL</a>, and can be used to annotate variations of the virus in
+different ways.
+</p>
+
+<p>
+A number of fields are obligatory: sample id, date, location,
+technology and authors. The others are optional, but it is valuable to
+enter them when information is available. Metadata is defined in this
+<a href="https://github.com/arvados/bh20-seq-resource/blob/master/bh20sequploader/bh20seq-schema.yml">schema</a>. From this schema we generate the input form. Note that
+optional fields have a question mark in the <code>type</code>. You can add
+metadata yourself, btw, because this is a public resource! See also
+<a href="./blog?id=using-covid-19-pubseq-part5">Modify metadata</a> for more information.
+</p>
+
+<p>
+To get more information about a field click on the question mark on
+the web form. Here we add some extra information.
+</p>
+</div>
+
+<div id="outline-container-org4c2e907" class="outline-3">
+<h3 id="org4c2e907"><span class="section-number-3">3.1</span> Obligatory fields</h3>
+<div class="outline-text-3" id="text-3-1">
+</div>
+<div id="outline-container-orgdddcb2e" class="outline-4">
+<h4 id="orgdddcb2e"><span class="section-number-4">3.1.1</span> Sample ID (sample<sub>id</sub>)</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+This is a string field that defines a unique sample identifier by the
+submitter. In addition to sample<sub>id</sub> we also have host<sub>id</sub>,
+provider<sub>sample</sub><sub>id</sub> and submitter<sub>sample</sub><sub>id</sub> where host is the host the
+sample came from, provider sample is the institution sample id and
+submitter is the submitting individual id. host<sub>id</sub> is important when
+multiple sequences come from the same host. Make sure not to have
+spaces in the sample<sub>id</sub>.
+</p>
+
+<p>
+Here we add the GenBank ID MT536190.1.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge9c2e76" class="outline-4">
+<h4 id="orge9c2e76"><span class="section-number-4">3.1.2</span> Collection date</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+Estimated collection date. The GenBank page says April 6, 2020.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org62c55ce" class="outline-4">
+<h4 id="org62c55ce"><span class="section-number-4">3.1.3</span> Collection location</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<p>
+A search on wikidata says Los Angeles is
+<a href="https://www.wikidata.org/entity/Q65">https://www.wikidata.org/entity/Q65</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org460b377" class="outline-4">
+<h4 id="org460b377"><span class="section-number-4">3.1.4</span> Sequencing technology</h4>
+<div class="outline-text-4" id="text-3-1-4">
+<p>
+GenBank entry says Illumina, so we can fill that in
+</p>
+</div>
+</div>
+
+<div id="outline-container-org77b1e14" class="outline-4">
+<h4 id="org77b1e14"><span class="section-number-4">3.1.5</span> Authors</h4>
+<div class="outline-text-4" id="text-3-1-5">
+<p>
+GenBank entry says 'Lamers,S., Nolan,D.J., Rose,R., Cross,S., Moraga
+Amador,D., Yang,T., Caruso,L., Navia,W., Von Borstel,L., Hui Zhou,X.,
+Freehan,A. and Garcia-Diaz,J.', so we can fill that in.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3cb346f" class="outline-3">
+<h3 id="org3cb346f"><span class="section-number-3">3.2</span> Optional fields</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+All other fields are optional. But let's see what we can add.
+</p>
+</div>
+
+<div id="outline-container-orgb0cffbb" class="outline-4">
+<h4 id="orgb0cffbb"><span class="section-number-4">3.2.1</span> Host information</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+Sadly, not much is known about the host from GenBank. A little
+sleuthing renders an interesting paper by some of the authors titled
+<a href="https://www.medrxiv.org/content/10.1101/2020.04.24.20078691v1">SARS-CoV-2 is consistent across multiple samples and methodologies</a>
+which dates after the sample, but has no reference other than that the
+raw data came from the SRA database, so it probably does not describe
+this particular sample. We don't know what this strain of SARS-Cov-2
+did to the person and what the person was like (say age group).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd2a43a6" class="outline-4">
+<h4 id="orgd2a43a6"><span class="section-number-4">3.2.2</span> Collecting institution</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+We can fill that in.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8d5bcf7" class="outline-4">
+<h4 id="org8d5bcf7"><span class="section-number-4">3.2.3</span> Specimen source</h4>
+<div class="outline-text-4" id="text-3-2-3">
+<p>
+We have that: nasopharyngeal swab
+</p>
+</div>
+</div>
+
+<div id="outline-container-org86b21b2" class="outline-4">
+<h4 id="org86b21b2"><span class="section-number-4">3.2.4</span> Source database accession</h4>
+<div class="outline-text-4" id="text-3-2-4">
+<p>
+Genbank which is <a href="http://identifiers.org/insdc/MT536190.1#sequence">http://identifiers.org/insdc/MT536190.1#sequence</a>.
+Note we plug in our own identifier MT536190.1.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org771ea66" class="outline-4">
+<h4 id="org771ea66"><span class="section-number-4">3.2.5</span> Strain name</h4>
+<div class="outline-text-4" id="text-3-2-5">
+<p>
+SARS-CoV-2/human/USA/LA-BIE-070/2020
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7d281f5" class="outline-2">
+<h2 id="org7d281f5"><span class="section-number-2">4</span> Step 3: Submit to COVID-19 PubSeq</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Once you have the sequence and the metadata together, hit
+the 'Add to Pangenome' button. The data will be checked,
+submitted and the workflows should kick in!
+</p>
+</div>
+
+
+<div id="outline-container-orgdf0f02d" class="outline-3">
+<h3 id="orgdf0f02d"><span class="section-number-3">4.1</span> Trouble shooting</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+We got an error saying: {"stem": "<a href="http://www.wikidata.org/entity/">http://www.wikidata.org/entity/</a>",&#x2026;
+which means that our location field was not formed correctly!  After
+fixing it to look like <a href="http://www.wikidata.org/entity/Q65">http://www.wikidata.org/entity/Q65</a> (note http
+instead on https and entity instead of wiki) the submission went
+through. Reload the page (it won't empty the fields) to re-enable the
+submit button.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org29f8a92" class="outline-2">
+<h2 id="org29f8a92"><span class="section-number-2">5</span> Step 4: Check output</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+The current pipeline takes 5.5 hours to complete! Once it completes
+the updated data can be checked on the <a href="./download">DOWNLOAD</a> page. After completion
+of above output this <a href="http://sparql.genenetwork.org/sparql/?default-graph-uri=&amp;query=PREFIX+pubseq%3A+%3Chttp%3A%2F%2Fbiohackathon.org%2Fbh20-seq-schema%23MainSchema%2F%3E%0D%0APREFIX+sio%3A+%3Chttp%3A%2F%2Fsemanticscience.org%2Fresource%2F%3E%0D%0Aselect+distinct+%3Fsample+%3Fp+%3Fo%0D%0A%7B%0D%0A+++%3Fsample+sio%3ASIO_000115+%22MT536190.1%22+.%0D%0A+++%3Fsample+%3Fp+%3Fo+.%0D%0A%7D&amp;format=text%2Fhtml&amp;timeout=0&amp;debug=on&amp;run=+Run+Query+">SPARQL query</a> shows some of the metadata we put
+in.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf493854" class="outline-2">
+<h2 id="orgf493854"><span class="section-number-2">6</span> Bulk sequence uploader</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Above steps require a manual upload of one sequence with metadata.
+What if you have a number of sequences you want to upload in bulk?
+For this we have a command line version of the uploader that can
+directly submit to COVID-19 PubSeq. It accepts a FASTA sequence
+file an associated metadata in <a href="https://github.com/arvados/bh20-seq-resource/blob/master/example/maximum_metadata_example.yaml">YAML</a> format. The YAML matches
+the web form and gets validated from the same <a href="https://github.com/arvados/bh20-seq-resource/blob/master/bh20sequploader/bh20seq-schema.yml">schema</a> looks. The YAML
+that you need to create/generate for your samples looks like
+</p>
+
+<div class="org-src-container">
+<pre class="src src-json">id: placeholder
+
+host:
+    host_id: XX<span style="color: #8bc34a;">1</span>
+    host_species: http://purl.obolibrary.org/obo/NCBITaxon_<span style="color: #8bc34a;">9606</span>
+    host_sex: http://purl.obolibrary.org/obo/PATO_<span style="color: #8bc34a;">0000384</span>
+    host_age: <span style="color: #8bc34a;">20</span>
+    host_age_unit: http://purl.obolibrary.org/obo/UO_<span style="color: #8bc34a;">0000036</span>
+    host_health_status: http://purl.obolibrary.org/obo/NCIT_C<span style="color: #8bc34a;">25269</span>
+    host_treatment: Process in which the act is intended to modify or alter host status <span style="color: #e91e63;">(</span>Compounds<span style="color: #e91e63;">)</span>
+    host_vaccination: <span style="color: #e91e63;">[</span>vaccines<span style="color: #8bc34a;">1</span>,vaccine<span style="color: #8bc34a;">2</span><span style="color: #e91e63;">]</span>
+    ethnicity: http://purl.obolibrary.org/obo/HANCESTRO_<span style="color: #8bc34a;">0010</span>
+    additional_host_information: Optional free text field for additional information
+
+sample:
+    sample_id: Id of the sample as defined by the submitter
+    collector_name: Name of the person that took the sample
+    collecting_institution: Institute that was responsible of sampling
+    specimen_source: <span style="color: #e91e63;">[</span>http://purl.obolibrary.org/obo/NCIT_C<span style="color: #8bc34a;">155831</span>,http://purl.obolibrary.org/obo/NCIT_C<span style="color: #8bc34a;">155835</span>]
+    collection_date: <span style="color: #9ccc65;">"2020-01-01"</span>
+    collection_location: http://www.wikidata.org/entity/Q<span style="color: #8bc34a;">148</span>
+    sample_storage_conditions: frozen specimen
+    source_database_accession: <span style="color: #2196F3;">[</span>http://identifiers.org/insdc/LC<span style="color: #8bc34a;">522350.1</span>#sequence]
+    additional_collection_information: Optional free text field for additional information
+
+virus:
+    virus_species: http://purl.obolibrary.org/obo/NCBITaxon_<span style="color: #8bc34a;">2697049</span>
+    virus_strain: SARS-CoV-<span style="color: #8bc34a;">2</span>/human/CHN/HS_<span style="color: #8bc34a;">8</span>/<span style="color: #8bc34a;">2020</span>
+
+technology:
+    sample_sequencing_technology: <span style="color: #EF6C00;">[</span>http://www.ebi.ac.uk/efo/EFO_<span style="color: #8bc34a;">0009173</span>,http://www.ebi.ac.uk/efo/EFO_<span style="color: #8bc34a;">0009173</span>]
+    sequence_assembly_method: Protocol used for assembly
+    sequencing_coverage: <span style="color: #B388FF;">[</span><span style="color: #8bc34a;">70.0</span>, <span style="color: #8bc34a;">100.0</span><span style="color: #B388FF;">]</span>
+    additional_technology_information: Optional free text field for additional information
+
+submitter:
+    authors: <span style="color: #B388FF;">[</span>John Doe, Joe Boe, Jonny Oe<span style="color: #B388FF;">]</span>
+    submitter_name: <span style="color: #B388FF;">[</span>John Doe<span style="color: #B388FF;">]</span>
+    submitter_address: John Doe's address
+    originating_lab: John Doe kitchen
+    lab_address: John Doe's address
+    provider_sample_id: XXX<span style="color: #8bc34a;">1</span>
+    submitter_sample_id: XXX<span style="color: #8bc34a;">2</span>
+    publication: PMID<span style="color: #8bc34a;">00001113</span>
+    submitter_orcid: <span style="color: #B388FF;">[</span>https://orcid.org/<span style="color: #8bc34a;">0000</span>-<span style="color: #8bc34a;">0000</span>-<span style="color: #8bc34a;">0000</span>-<span style="color: #8bc34a;">0000</span>,https://orcid.org/<span style="color: #8bc34a;">0000</span>-<span style="color: #8bc34a;">0000</span>-<span style="color: #8bc34a;">0000</span>-<span style="color: #8bc34a;">0001</span>]
+    additional_submitter_information: Optional free text field for additional information
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org37fadbc" class="outline-3">
+<h3 id="org37fadbc"><span class="section-number-3">6.1</span> Run the uploader (CLI)</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Installing with pip you should be
+able to run
+</p>
+
+<pre class="example">
+bh20sequploader sequence.fasta metadata.yaml
+</pre>
+
+
+
+<p>
+Alternatively the script can be installed from <a href="https://github.com/arvados/bh20-seq-resource#installation">github</a>. Run on the
+command line
+</p>
+
+<pre class="example">
+python3 bh20sequploader/main.py example/sequence.fasta example/maximum_metadata_example.yaml
+</pre>
+
+
+<p>
+after installing dependencies (also described in <a href="https://github.com/arvados/bh20-seq-resource/blob/master/doc/INSTALL.md">INSTALL</a> with the GNU
+Guix package manager).
+</p>
+
+<p>
+The web interface using this exact same script so it should just work
+(TM).
+</p>
+</div>
+</div>
+
+<div id="outline-container-org39adf09" class="outline-3">
+<h3 id="org39adf09"><span class="section-number-3">6.2</span> Example: uploading bulk GenBank sequences</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+We also use above script to bulk upload GenBank sequences with a <a href="https://github.com/arvados/bh20-seq-resource/blob/master/scripts/from_genbank_to_fasta_and_yaml.py">FASTA
+and YAML</a> extractor specific for GenBank. This means that the steps we
+took above for uploading a GenBank sequence are already automated.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr><small>Created by <a href="http://thebird.nl/">Pjotr Prins</a> (pjotr.public768 at thebird 'dot' nl) using Emacs org-mode and a healthy dose of Lisp!<br />Modified 2020-05-30 Sat 18:12</small>.
+</div>
+</body>
+</html>

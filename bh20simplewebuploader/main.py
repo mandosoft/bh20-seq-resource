@@ -3,6 +3,7 @@ import itertools
 import tempfile
 import shutil
 import subprocess
+import logging
 import os
 import sys
 import re
@@ -13,6 +14,9 @@ from flask import Flask, request, redirect, send_file, send_from_directory, rend
 import os.path
 import requests
 
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__name__ )
+log.debug("Entering web uploader")
 
 if not os.path.isfile('bh20sequploader/mainx.py'):
     print("WARNING: run FLASK from the root of the source repository!", file=sys.stderr)
@@ -441,9 +445,14 @@ def download_page():
 def demo_page():
     return render_template('demo.html',menu='DEMO')
 
-@app.route('/blog')
+@app.route('/blog',methods=['GET'])
 def blog_page():
-    return render_template('blog.html',menu='BLOG')
+    blog_content = request.args.get('id') # e.g. using-covid-19-pubseq-part3
+    buf = None;
+    if blog_content:
+        buf = get_html_body('doc/blog/'+blog_content+'.html')
+    return render_template('blog.html',menu='BLOG',embed=buf,blog=blog_content)
+
 
 @app.route('/about')
 def about_page():

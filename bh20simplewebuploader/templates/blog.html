@@ -5,16 +5,26 @@
     {% include 'banner.html' %}
     {% include 'menu.html' %}
 
-    <h1>BLOG Entries</h1>
+    {% if embed %}
+    {{ embed|safe }}
+    <hr>
 
-    <i>Note that this is work in progress (WIP)</i>
+    <p>
+      Other blog entries:
+    </p>
+
+    {% else %}
+    {% include 'blurb.html' %}
+
+    <h2>BLOG Entries:</h2>
+    {% endif %}
 
     <section class="blog-entries">
       <div class="blog-table">
         <div class="blog-table-body">
           <div class="blog-table-row">
             <div class="blog-table-cell">
-              <a href="https://github.com/arvados/bh20-seq-resource/blob/master/doc/blog/using-covid-19-pubseq-part1.org">Query metadata with SPARQL</a>
+              <a href="/blog?id=using-covid-19-pubseq-part1">Query metadata with SPARQL</a>
             </div>
             <div class="blog-table-cell">
               We fetch sequence data and metadata. We query
@@ -23,23 +33,16 @@
           </div>
           <div class="blog-table-row">
             <div class="blog-table-cell">
-              <a href="https://github.com/arvados/bh20-seq-resource/blob/master/doc/blog/using-covid-19-pubseq-part2.org">Interacting with Arvados</a>
+              <a href="/blog?id=using-covid-19-pubseq-part3">Submitting a sequence</a>
             </div>
             <div class="blog-table-cell">
-              We explore the Arvados command line and API
-            </div>
-          </div>
-          <div class="blog-table-row">
-            <div class="blog-table-cell">
-              <a href="https://github.com/arvados/bh20-seq-resource/blob/master/doc/blog/using-covid-19-pubseq-part3.org">Submitting a sequence</a>
-            </div>
-            <div class="blog-table-cell">
-              We submit a sequence to the database
+              We submit a sequence to the database. In this BLOG we fetch
+              a sequence from GenBank and add it to the database.
             </div>
           </div>
           <div class="blog-table-row">
             <div class="blog-table-cell">
-              <a href="https://github.com/arvados/bh20-seq-resource/blob/master/doc/blog/using-covid-19-pubseq-part4.org">Update workflow</a>
+              <a href="/blog?id=using-covid-19-pubseq-part4">Modify workflow</a>
             </div>
             <div class="blog-table-cell">
               We modify a workflow to get new output
@@ -47,10 +50,19 @@
           </div>
           <div class="blog-table-row">
             <div class="blog-table-cell">
-              <a href="https://github.com/arvados/bh20-seq-resource/blob/master/doc/blog/using-covid-19-pubseq-part5.org">Update metadata</a>
+              <a href="/blog?id=using-covid-19-pubseq-part5">Modify metadata</a>
             </div>
             <div class="blog-table-cell">
-              We modify metadata for all to use!
+              We modify metadata for all to use! In this BLOG we add a field
+              for a creative commons license.
+            </div>
+          </div>
+          <div class="blog-table-row">
+            <div class="blog-table-cell">
+              <a href="/blog?id=using-covid-19-pubseq-part2">Interacting with Arvados</a>
+            </div>
+            <div class="blog-table-cell">
+              We explore the Arvados command line and API
             </div>
           </div>
         </div>

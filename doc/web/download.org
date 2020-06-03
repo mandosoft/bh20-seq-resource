@@ -2,6 +2,7 @@
 #+AUTHOR: Pjotr Prins
 
 * Table of Contents                                                     :TOC:noexport:
+ - [[#workflow-runs][Workflow runs]]
  - [[#fasta-files][FASTA files]]
  - [[#metadata][Metadata]]
  - [[#pangenome][Pangenome]]
@@ -16,6 +17,13 @@
    - [[#multiple-sequence-alignment-msa][Multiple Sequence Alignment (MSA)]]
    - [[#phylogenetic-tree][Phylogenetic tree]]
    - [[#protein-prediction][Protein prediction]]
+
+* Workflow runs
+
+The last runs can be viewed [[https://workbench.lugli.arvadosapi.com/projects/lugli-j7d0g-y4k4uswcqi3ku56#Subprojects][here]]. If you click on a run you can see
+the workflows that ran under ~Processes~. Output (also intermediate)
+is listed under ~Data collections~. All current data is listed
+[[https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/][here]]. Note that it takes time for a run to complete and show.
 
 * FASTA files
 

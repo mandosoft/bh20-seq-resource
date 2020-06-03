@@ -1,2 +1,239 @@
-/Work in progress!/
+#+TITLE: COVID-19 PubSeq Uploading Data (part 3)
+#+AUTHOR: Pjotr Prins
+# C-c C-e h h   publish
+# C-c !         insert date (use . for active agenda, C-u C-c ! for date, C-u C-c . for time)
+# C-c C-t       task rotate
 
+#+HTML_HEAD: <link rel="Blog stylesheet" type="text/css" href="blog.css" />
+
+
+
+* Table of Contents                                                     :TOC:noexport:
+ - [[#uploading-data][Uploading Data]]
+ - [[#step-1-upload-sequence][Step 1: Upload sequence]]
+ - [[#step-2-add-metadata][Step 2: Add metadata]]
+   - [[#obligatory-fields][Obligatory fields]]
+   - [[#optional-fields][Optional fields]]
+ - [[#step-3-submit-to-covid-19-pubseq][Step 3: Submit to COVID-19 PubSeq]]
+   - [[#trouble-shooting][Trouble shooting]]
+ - [[#step-4-check-output][Step 4: Check output]]
+ - [[#bulk-sequence-uploader][Bulk sequence uploader]]
+   - [[#run-the-uploader-cli][Run the uploader (CLI)]]
+   - [[#example-uploading-bulk-genbank-sequences][Example: uploading bulk GenBank sequences]]
+
+* Uploading Data
+
+The COVID-19 PubSeq allows you to upload your SARS-Cov-2 strains to a
+public resource for global comparisons. A recompute of the pangenome
+gets triggered on upload. Read the [[./about][ABOUT]] page for more information.
+
+* Step 1: Upload sequence
+
+To upload a sequence in the [[http://covid19.genenetwork.org/][web upload page]] hit the browse button and
+select the FASTA file on your local hard disk.
+
+We start with an assembled or mapped sequence in FASTA format. The
+PubSeq uploader contains a [[https://github.com/arvados/bh20-seq-resource/blob/master/bh20sequploader/qc_fasta.py][QC step]] which checks whether it is a likely
+SARS-CoV-2 sequence. While PubSeq deduplicates sequences and never
+overwrites metadata, you may still want to check whether your data
+already is in the system by querying some metadata as described in
+[[./blog?id=using-covid-19-pubseq-part1][Query metadata with SPARQL]] or by simply downloading and checking one
+of the files on the [[./download][download]] page. We find GenBank [[https://www.ncbi.nlm.nih.gov/nuccore/MT536190][MT536190.1]] has not
+been included yet. A FASTA text file can be [[https://www.ncbi.nlm.nih.gov/nuccore/MT536190.1?report=fasta&log$=seqview&format=text][downloaded]] to your local
+disk and uploaded through our [[./][web upload page]]. Make sure the file does
+not include any HTML!
+
+Note: we currently only allow FASTA uploads. In the near future we'll
+allow for uploading raw sequence files. This is important for creating
+an improved pangenome.
+
+* Step 2: Add metadata
+
+The [[./][web upload page]] contains fields for adding metadata. Metadata is
+not only important for attribution, is also important for
+analysis. The metadata is available for queries, see [[./blog?id=using-covid-19-pubseq-part1][Query metadata
+with SPARQL]], and can be used to annotate variations of the virus in
+different ways.
+
+A number of fields are obligatory: sample id, date, location,
+technology and authors. The others are optional, but it is valuable to
+enter them when information is available. Metadata is defined in this
+[[https://github.com/arvados/bh20-seq-resource/blob/master/bh20sequploader/bh20seq-schema.yml][schema]]. From this schema we generate the input form. Note that
+optional fields have a question mark in the ~type~. You can add
+metadata yourself, btw, because this is a public resource! See also
+[[./blog?id=using-covid-19-pubseq-part5][Modify metadata]] for more information.
+
+To get more information about a field click on the question mark on
+the web form. Here we add some extra information.
+
+** Obligatory fields
+
+*** Sample ID (sample_id)
+
+This is a string field that defines a unique sample identifier by the
+submitter. In addition to sample_id we also have host_id,
+provider_sample_id and submitter_sample_id where host is the host the
+sample came from, provider sample is the institution sample id and
+submitter is the submitting individual id. host_id is important when
+multiple sequences come from the same host. Make sure not to have
+spaces in the sample_id.
+
+Here we add the GenBank ID MT536190.1.
+
+*** Collection date
+
+Estimated collection date. The GenBank page says April 6, 2020.
+
+*** Collection location
+
+A search on wikidata says Los Angeles is
+https://www.wikidata.org/entity/Q65
+
+*** Sequencing technology
+
+GenBank entry says Illumina, so we can fill that in
+
+*** Authors
+
+GenBank entry says 'Lamers,S., Nolan,D.J., Rose,R., Cross,S., Moraga
+Amador,D., Yang,T., Caruso,L., Navia,W., Von Borstel,L., Hui Zhou,X.,
+Freehan,A. and Garcia-Diaz,J.', so we can fill that in.
+
+** Optional fields
+
+All other fields are optional. But let's see what we can add.
+
+*** Host information
+
+Sadly, not much is known about the host from GenBank. A little
+sleuthing renders an interesting paper by some of the authors titled
+[[https://www.medrxiv.org/content/10.1101/2020.04.24.20078691v1][SARS-CoV-2 is consistent across multiple samples and methodologies]]
+which dates after the sample, but has no reference other than that the
+raw data came from the SRA database, so it probably does not describe
+this particular sample. We don't know what this strain of SARS-Cov-2
+did to the person and what the person was like (say age group).
+
+*** Collecting institution
+
+We can fill that in.
+
+*** Specimen source
+
+We have that: nasopharyngeal swab
+
+*** Source database accession
+
+Genbank which is http://identifiers.org/insdc/MT536190.1#sequence.
+Note we plug in our own identifier MT536190.1.
+
+*** Strain name
+
+SARS-CoV-2/human/USA/LA-BIE-070/2020
+
+* Step 3: Submit to COVID-19 PubSeq
+
+Once you have the sequence and the metadata together, hit
+the 'Add to Pangenome' button. The data will be checked,
+submitted and the workflows should kick in!
+
+
+** Trouble shooting
+
+We got an error saying: {"stem": "http://www.wikidata.org/entity/",...
+which means that our location field was not formed correctly!  After
+fixing it to look like http://www.wikidata.org/entity/Q65 (note http
+instead on https and entity instead of wiki) the submission went
+through. Reload the page (it won't empty the fields) to re-enable the
+submit button.
+
+
+* Step 4: Check output
+
+The current pipeline takes 5.5 hours to complete! Once it completes
+the updated data can be checked on the [[./download][DOWNLOAD]] page. After completion
+of above output this [[http://sparql.genenetwork.org/sparql/?default-graph-uri=&query=PREFIX+pubseq%3A+%3Chttp%3A%2F%2Fbiohackathon.org%2Fbh20-seq-schema%23MainSchema%2F%3E%0D%0APREFIX+sio%3A+%3Chttp%3A%2F%2Fsemanticscience.org%2Fresource%2F%3E%0D%0Aselect+distinct+%3Fsample+%3Fp+%3Fo%0D%0A%7B%0D%0A+++%3Fsample+sio%3ASIO_000115+%22MT536190.1%22+.%0D%0A+++%3Fsample+%3Fp+%3Fo+.%0D%0A%7D&format=text%2Fhtml&timeout=0&debug=on&run=+Run+Query+][SPARQL query]] shows some of the metadata we put
+in.
+
+* Bulk sequence uploader
+
+Above steps require a manual upload of one sequence with metadata.
+What if you have a number of sequences you want to upload in bulk?
+For this we have a command line version of the uploader that can
+directly submit to COVID-19 PubSeq. It accepts a FASTA sequence
+file an associated metadata in [[https://github.com/arvados/bh20-seq-resource/blob/master/example/maximum_metadata_example.yaml][YAML]] format. The YAML matches
+the web form and gets validated from the same [[https://github.com/arvados/bh20-seq-resource/blob/master/bh20sequploader/bh20seq-schema.yml][schema]] looks. The YAML
+that you need to create/generate for your samples looks like
+
+#+begin_src json
+id: placeholder
+
+host:
+    host_id: XX1
+    host_species: http://purl.obolibrary.org/obo/NCBITaxon_9606
+    host_sex: http://purl.obolibrary.org/obo/PATO_0000384
+    host_age: 20
+    host_age_unit: http://purl.obolibrary.org/obo/UO_0000036
+    host_health_status: http://purl.obolibrary.org/obo/NCIT_C25269
+    host_treatment: Process in which the act is intended to modify or alter host status (Compounds)
+    host_vaccination: [vaccines1,vaccine2]
+    ethnicity: http://purl.obolibrary.org/obo/HANCESTRO_0010
+    additional_host_information: Optional free text field for additional information
+
+sample:
+    sample_id: Id of the sample as defined by the submitter
+    collector_name: Name of the person that took the sample
+    collecting_institution: Institute that was responsible of sampling
+    specimen_source: [http://purl.obolibrary.org/obo/NCIT_C155831,http://purl.obolibrary.org/obo/NCIT_C155835]
+    collection_date: "2020-01-01"
+    collection_location: http://www.wikidata.org/entity/Q148
+    sample_storage_conditions: frozen specimen
+    source_database_accession: [http://identifiers.org/insdc/LC522350.1#sequence]
+    additional_collection_information: Optional free text field for additional information
+
+virus:
+    virus_species: http://purl.obolibrary.org/obo/NCBITaxon_2697049
+    virus_strain: SARS-CoV-2/human/CHN/HS_8/2020
+
+technology:
+    sample_sequencing_technology: [http://www.ebi.ac.uk/efo/EFO_0009173,http://www.ebi.ac.uk/efo/EFO_0009173]
+    sequence_assembly_method: Protocol used for assembly
+    sequencing_coverage: [70.0, 100.0]
+    additional_technology_information: Optional free text field for additional information
+
+submitter:
+    authors: [John Doe, Joe Boe, Jonny Oe]
+    submitter_name: [John Doe]
+    submitter_address: John Doe's address
+    originating_lab: John Doe kitchen
+    lab_address: John Doe's address
+    provider_sample_id: XXX1
+    submitter_sample_id: XXX2
+    publication: PMID00001113
+    submitter_orcid: [https://orcid.org/0000-0000-0000-0000,https://orcid.org/0000-0000-0000-0001]
+    additional_submitter_information: Optional free text field for additional information
+#+end_src
+
+** Run the uploader (CLI)
+
+Installing with pip you should be
+able to run
+
+: bh20sequploader sequence.fasta metadata.yaml
+
+
+Alternatively the script can be installed from [[https://github.com/arvados/bh20-seq-resource#installation][github]]. Run on the
+command line
+
+: python3 bh20sequploader/main.py example/sequence.fasta example/maximum_metadata_example.yaml
+
+after installing dependencies (also described in [[https://github.com/arvados/bh20-seq-resource/blob/master/doc/INSTALL.md][INSTALL]] with the GNU
+Guix package manager).
+
+The web interface using this exact same script so it should just work
+(TM).
+
+** Example: uploading bulk GenBank sequences
+
+We also use above script to bulk upload GenBank sequences with a [[https://github.com/arvados/bh20-seq-resource/blob/master/scripts/from_genbank_to_fasta_and_yaml.py][FASTA
+and YAML]] extractor specific for GenBank. This means that the steps we
+took above for uploading a GenBank sequence are already automated.

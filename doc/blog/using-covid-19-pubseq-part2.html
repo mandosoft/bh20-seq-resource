@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-30 Sat 10:40 -->
+<!-- 2020-05-30 Sat 11:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Download</title>
+<title>COVID-19 PubSeq (part 2)</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Pjotr Prins" />
 <style type="text/css">
@@ -193,6 +193,7 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="Blog stylesheet" type="text/css" href="blog.css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -241,201 +242,153 @@ for the JavaScript code in this tag.
 </script>
 </head>
 <body>
-<div id="content">
-<h1 class="title">Download</h1>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="http://covid19.genenetwork.org"> HOME </a>
+</div><div id="content">
+<h1 class="title">COVID-19 PubSeq (part 2)</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgcde4e6b">1. Workflow runs</a></li>
-<li><a href="#org1b46d7e">2. FASTA files</a></li>
-<li><a href="#orgf2db570">3. Metadata</a></li>
-<li><a href="#org9f89b24">4. Pangenome</a>
-<ul>
-<li><a href="#org436ee36">4.1. Pangenome GFA format</a></li>
-<li><a href="#org6cd667b">4.2. Pangenome in ODGI format</a></li>
-<li><a href="#org220b6cb">4.3. Pangenome RDF format</a></li>
-<li><a href="#org78f267a">4.4. Pangenome Browser format</a></li>
-</ul>
-</li>
-<li><a href="#org8cced34">5. Log of workflow output</a></li>
-<li><a href="#org9d23c51">6. All files</a></li>
-<li><a href="#org105d2d4">7. Planned</a>
-<ul>
-<li><a href="#org52bb570">7.1. Raw sequence data</a></li>
-<li><a href="#org68c178c">7.2. Multiple Sequence Alignment (MSA)</a></li>
-<li><a href="#org9ccf15c">7.3. Phylogenetic tree</a></li>
-<li><a href="#org31c2b68">7.4. Protein prediction</a></li>
-</ul>
-</li>
+<li><a href="#org7942167">1. Finding output of workflows</a></li>
+<li><a href="#org0022bbe">2. Introduction</a></li>
+<li><a href="#org3929710">3. The Arvados file interface</a></li>
+<li><a href="#orgc4dba6e">4. Using the Arvados API</a></li>
 </ul>
 </div>
 </div>
+<p>
+As part of the COVID-19 Biohackathon 2020 we formed a working group to
+create a COVID-19 Public Sequence Resource (COVID-19 PubSeq) for
+Corona virus sequences. The general idea is to create a repository
+that has a low barrier to entry for uploading sequence data using best
+practices. I.e., data published with a creative commons 4.0 (CC-4.0)
+license with metadata using state-of-the art standards and, perhaps
+most importantly, providing standardised workflows that get triggered
+on upload, so that results are immediately available in standardised
+data formats.
+</p>
 
-<div id="outline-container-orgcde4e6b" class="outline-2">
-<h2 id="orgcde4e6b"><span class="section-number-2">1</span> Workflow runs</h2>
+<div id="outline-container-org7942167" class="outline-2">
+<h2 id="org7942167"><span class="section-number-2">1</span> Finding output of workflows</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-The last runs can be viewed <a href="https://workbench.lugli.arvadosapi.com/projects/lugli-j7d0g-y4k4uswcqi3ku56#Subprojects">here</a>. If you click on a run you can see
-the workflows that ran under <code>Processes</code>. Output (also intermediate)
-is listed under <code>Data collections</code>. All current data is listed
-<a href="https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/">here</a>. Note that it takes time for a run to complete and show.
+As part of the COVID-19 Biohackathon 2020 we formed a working group to
+create a COVID-19 Public Sequence Resource (COVID-19 PubSeq) for
+Corona virus sequences. The general idea is to create a repository
+that has a low barrier to entry for uploading sequence data using best
+practices. I.e., data published with a creative commons 4.0 (CC-4.0)
+license with metadata using state-of-the art standards and, perhaps
+most importantly, providing standardised workflows that get triggered
+on upload, so that results are immediately available in standardised
+data formats.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org1b46d7e" class="outline-2">
-<h2 id="org1b46d7e"><span class="section-number-2">2</span> FASTA files</h2>
+<div id="outline-container-org0022bbe" class="outline-2">
+<h2 id="org0022bbe"><span class="section-number-2">2</span> Introduction</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-The <b>public sequence resource</b> provides all uploaded sequences as
-FASTA files.  They can be referred to from metadata individually. We
-also provide a single file <a href="https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/relabeledSeqs_dedup.fasta">FASTA download</a>.
+We are using Arvados to run common workflow language (CWL) pipelines.
+The most recent output is on display on a <a href="https://workbench.lugli.arvadosapi.com/collections/lugli-4zz18-z513nlpqm03hpca">web page</a> (with time stamp)
+and a full list is generated <a href="https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/">here</a>. It is nice to start up, but for
+most users we need a dedicated and themed results page.  People don't
+want to wade through thousands of output files!
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgf2db570" class="outline-2">
-<h2 id="orgf2db570"><span class="section-number-2">3</span> Metadata</h2>
+<div id="outline-container-org3929710" class="outline-2">
+<h2 id="org3929710"><span class="section-number-2">3</span> The Arvados file interface</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-Metadata can be downloaded as <a href="https://www.w3.org/TR/turtle/">Turtle RDF</a> as a <a href="https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/mergedmetadata.ttl">mergedmetadat.ttl</a> which
-can be loaded into any RDF triple-store. We provide a Virtuoso SPARQL
-endpoint ourselves which can be queried from
-<a href="http://sparql.genenetwork.org/sparql/">http://sparql.genenetwork.org/sparql/</a>. Query examples can be found in
-our <a href="https://github.com/arvados/bh20-seq-resource/blob/master/doc/blog/using-covid-19-pubseq-part1.org">BLOG</a>.
+Arvados has the web server, but it also has a REST API and associated
+command line tools. We are already using the <a href="https://github.com/arvados/bh20-seq-resource/blob/master/bh20sequploader/main.py#L27">API</a> to upload data.  If
+you follow the pip or <a href="../INSTALL.md">../INSTALL.md</a> GNU Guix instructions for
+installing Arvados API you'll find the following command line tools
+(also documented <a href="https://doc.arvados.org/v2.0/sdk/cli/subcommands.html">here</a>):
 </p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Command</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">arv-ls</td>
+<td class="org-left">list files in Arvados</td>
+</tr>
+
+<tr>
+<td class="org-left">arv-put</td>
+<td class="org-left">upload a file to Arvados</td>
+</tr>
+
+<tr>
+<td class="org-left">arv-get</td>
+<td class="org-left">get a textual representation of Arvados objects from the command line. The output can be limited to a subset of the object’s fields. This command can be used with only the knowledge of an object’s UUID</td>
+</tr>
+</tbody>
+</table>
 
 <p>
-The Swiss Institute of Bioinformatics has included this data in
-<a href="https://covid-19-sparql.expasy.org/">https://covid-19-sparql.expasy.org/</a> and made it part of <a href="https://www.uniprot.org/">Uniprot</a>.
+Now, this is a public instance so we can use the tokens from
+the <a href="https://github.com/arvados/bh20-seq-resource/blob/master/bh20sequploader/main.py#L16">uploader</a>.
 </p>
+
+<div class="SOURCE">
+<p>
+export ARVADOS<sub>API</sub><sub>HOST</sub>='lugli.arvadosapi.com'
+export ARVADOS<sub>API</sub><sub>TOKEN</sub>='2fbebpmbo3rw3x05ueu2i6nx70zhrsb1p22ycu3ry34m4x4462'
+arv-ls lugli-4zz18-z513nlpqm03hpca
+</p>
+
+</div>
 
 <p>
-An RDF file that includes the sequences themselves in a variation
-graph can be downloaded from below Pangenome RDF format.
+will list all files (the UUID we got from the Arvados results page). To
+get the UUID of the files
 </p>
-</div>
-</div>
 
-<div id="outline-container-org9f89b24" class="outline-2">
-<h2 id="org9f89b24"><span class="section-number-2">4</span> Pangenome</h2>
-<div class="outline-text-2" id="text-4">
+<div class="SOURCE">
 <p>
-Pangenome data is made available in multiple guises. Variation graphs
-(VG) provide a succinct encoding of the sequences of many genomes.
+curl <a href="https://lugli.arvadosapi.com/arvados/v1/config">https://lugli.arvadosapi.com/arvados/v1/config</a> | jq .Users.AnonymousUserToken
+env ARVADOS<sub>API</sub><sub>TOKEN</sub>=5o42qdxpxp5cj15jqjf7vnxx5xduhm4ret703suuoa3ivfglfh \
+  arv-get lugli-4zz18-z513nlpqm03hpca
 </p>
+
 </div>
 
-<div id="outline-container-org436ee36" class="outline-3">
-<h3 id="org436ee36"><span class="section-number-3">4.1</span> Pangenome GFA format</h3>
-<div class="outline-text-3" id="text-4-1">
 <p>
-<a href="https://github.com/GFA-spec/GFA-spec">GFA</a> is a standard for graphical fragment assembly and consumed
-by tools such as <a href="https://github.com/vgteam/vg">vgtools</a>.
+and fetch one listed JSON file <code>chunk001_bin4000.schematic.json</code> with
+its listed UUID:
 </p>
+
+<pre class="example">
+arv-get 2be6af7b4741f2a5c5f8ff2bc6152d73+1955623+Ab9ad65d7fe958a053b3a57d545839de18290843a@5ed7f3c5
+</pre>
 </div>
 </div>
 
-<div id="outline-container-org6cd667b" class="outline-3">
-<h3 id="org6cd667b"><span class="section-number-3">4.2</span> Pangenome in ODGI format</h3>
-<div class="outline-text-3" id="text-4-2">
-<p>
-<a href="https://github.com/vgteam/odgi">ODGI</a> is a format that supports an optimised dynamic genome/graph
-implementation.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org220b6cb" class="outline-3">
-<h3 id="org220b6cb"><span class="section-number-3">4.3</span> Pangenome RDF format</h3>
-<div class="outline-text-3" id="text-4-3">
-<p>
-An RDF file that includes the sequences themselves in a variation
-graph can be downloaded from
-<a href="https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/">relabeledSeqs-dedup-relabeledSeqs-dedup.ttl.xz</a>.
-</p>
-</div>
-</div>
-
-
-<div id="outline-container-org78f267a" class="outline-3">
-<h3 id="org78f267a"><span class="section-number-3">4.4</span> Pangenome Browser format</h3>
-<div class="outline-text-3" id="text-4-4">
-<p>
-The many JSON files that are named as
-<a href="https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/">results/1/chunk001200.bin1.schematic.json</a> are consumed by the
-Pangenome browser.
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org8cced34" class="outline-2">
-<h2 id="org8cced34"><span class="section-number-2">5</span> Log of workflow output</h2>
-<div class="outline-text-2" id="text-5">
-<p>
-Including in below link is a log file of the last workflow runs.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9d23c51" class="outline-2">
-<h2 id="org9d23c51"><span class="section-number-2">6</span> All files</h2>
-<div class="outline-text-2" id="text-6">
-<p>
-<a href="https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/">https://collections.lugli.arvadosapi.com/c=lugli-4zz18-z513nlpqm03hpca/</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org105d2d4" class="outline-2">
-<h2 id="org105d2d4"><span class="section-number-2">7</span> Planned</h2>
-<div class="outline-text-2" id="text-7">
-<p>
-We are planning the add the following output (see also
-</p>
-</div>
-
-<div id="outline-container-org52bb570" class="outline-3">
-<h3 id="org52bb570"><span class="section-number-3">7.1</span> Raw sequence data</h3>
-<div class="outline-text-3" id="text-7-1">
-<p>
-See <a href="https://github.com/arvados/bh20-seq-resource/issues/16">fastq tracker</a> and <a href="https://github.com/arvados/bh20-seq-resource/issues/63">BAM tracker</a>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org68c178c" class="outline-3">
-<h3 id="org68c178c"><span class="section-number-3">7.2</span> Multiple Sequence Alignment (MSA)</h3>
-<div class="outline-text-3" id="text-7-2">
-<p>
-See <a href="https://github.com/arvados/bh20-seq-resource/issues/11">MSA tracker</a>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9ccf15c" class="outline-3">
-<h3 id="org9ccf15c"><span class="section-number-3">7.3</span> Phylogenetic tree</h3>
-<div class="outline-text-3" id="text-7-3">
-<p>
-See <a href="https://github.com/arvados/bh20-seq-resource/issues/43">Phylo tracker</a>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org31c2b68" class="outline-3">
-<h3 id="org31c2b68"><span class="section-number-3">7.4</span> Protein prediction</h3>
-<div class="outline-text-3" id="text-7-4">
-<p>
-We aim to make protein predictions available.
-</p>
-</div>
-</div>
+<div id="outline-container-orgc4dba6e" class="outline-2">
+<h2 id="orgc4dba6e"><span class="section-number-2">4</span> Using the Arvados API</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<hr><small>Created by <a href="http://thebird.nl/">Pjotr Prins</a> (pjotr.public768 at thebird 'dot' nl) using Emacs org-mode and a healthy dose of Lisp!<br />Modified 2020-05-30 Sat 10:40</small>.
+<hr><small>Created by <a href="http://thebird.nl/">Pjotr Prins</a> (pjotr.public768 at thebird 'dot' nl) using Emacs org-mode and a healthy dose of Lisp!<br />Modified 2020-05-30 Sat 11:50</small>.
 </div>
 </body>
 </html>

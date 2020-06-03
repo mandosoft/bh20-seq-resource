@@ -8,13 +8,16 @@
  - [[#why-should-i-upload-my-data-here][Why should I upload my data here?]]
  - [[#why-should-i-not-upload-by-data-here][Why should I not upload by data here?]]
  - [[#how-does-the-public-sequence-resource-work][How does the public sequence resource work?]]
+ - [[#who-uses-the-public-sequence-resource][Who uses the public sequence resource?]]
  - [[#is-this-about-open-data][Is this about open data?]]
  - [[#is-this-about-free-software][Is this about free software?]]
  - [[#how-do-i-upload-raw-data][How do I upload raw data?]]
  - [[#how-do-i-change-metadata][How do I change metadata?]]
  - [[#how-do-i-change-the-work-flows][How do I change the work flows?]]
  - [[#how-do-i-change-the-source-code][How do I change the source code?]]
+ - [[#should-i-choose-cc-by-or-cc0][Should I choose CC-BY or CC0?]]
  - [[#how-do-i-deal-with-private-data-and-privacy][How do I deal with private data and privacy?]]
+ - [[#how-do-i-communicate-with-you][How do I communicate with you?]]
  - [[#who-are-the-sponsors][Who are the sponsors?]]
 
 * What is the 'public sequence resource' about?
@@ -60,6 +63,8 @@ public resources, including GISAID.
    for bulk uploads
 3. We provide a live SPARQL end-point for all metadata
 2. We provide free data analysis and sequence comparison triggered on data upload
+3. We do real work for you, with this [[https://workbench.lugli.arvadosapi.com/container_requests/lugli-xvhdp-bhhk4nxx1lch5od][link]] you can see the last
+   run took 5.5 hours!
 4. We provide free downloads of all computed output
 3. There is no need to set up pipelines and/or compute clusters
 4. All workflows get triggered on uploading a new sequence
@@ -67,6 +72,7 @@ public resources, including GISAID.
 4. Your data gets automatically integrated with the Swiss Institure of
    Bioinformatics COVID-19 knowledge base
    https://covid-19-sparql.expasy.org/ (Elixir Switzerland)
+4. Your data will be used to develop drug targets
 
 Finally, if you upload your data here we have workflows that output
 formatted data suitable for uploading to EBI resources (and soon
@@ -93,6 +99,14 @@ On uploading a sequence with metadata it will automatically be
 processed and incorporated into the public pangenome with metadata
 using workflows from the High Performance Open Biology Lab defined
 [[https://github.com/hpobio-lab/viral-analysis/tree/master/cwl/pangenome-generate][here]].
+
+* Who uses the public sequence resource?
+
+The Swiss Institute of Bioinformatics has included this data in
+https://covid-19-sparql.expasy.org/ and made it part of [[https://www.uniprot.org/][Uniprot]].
+
+[[https://uthsc.edu][UTHSC]] and [[https://www.ornl.gov/news/ornl-fight-against-covid-19][ORNL]] use COVID-19 PubSeq data for protein prediction and
+drug development.
 
 * Is this about open data?
 
@@ -130,12 +144,26 @@ Go to our [[https://github.com/arvados/bh20-seq-resource][source code repositori
 something and submit a [[https://github.com/arvados/bh20-seq-resource/pulls][pull request]] (PR). That easy! Check out how
 many PRs we already merged.
 
+* Should I choose CC-BY or CC0?
+
+Restrictive data licenses are hampering data sharing and reproducible
+research. CC0 is the preferred license because it gives researchers
+the most freedom. Since we provide metadata there is no reason for
+others not to honour your work. We also provide CC-BY as an option
+because we know people like the attribution clause.
+
+In all honesty: we prefer both data and software to be free.
+
 * How do I deal with private data and privacy?
 
 A public sequence resource is about public data. Metadata can refer to
 private data. You can use your own (anonymous) identifiers.  We also
 plan to combine identifiers with clinical data stored securely at
 [[https://redcap-covid19.elixir-luxembourg.org/redcap/][REDCap]]. See the relevant [[https://github.com/arvados/bh20-seq-resource/issues/21][tracker]] for more information and contributing.
+
+* How do I communicate with you?
+
+We use a [[https://gitter.im/arvados/pubseq?utm_source=share-link&utm_medium=link&utm_campaign=share-link][gitter channel]] you can join.
 
 * Who are the sponsors?
 
